@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wiki</title>
+    <link rel="stylesheet" href="/_layr/layr.css" />
+    <link rel="stylesheet" href="./main.css" />
+    <script src="/_layr/layr.js"></script>
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <div class="app" id="app" data-view="list">
+      <aside class="side">
+        <div class="side-head">
+          <input class="layr-input" id="search" type="search" placeholder="Search pages, #tag" autocomplete="off"
+            aria-label="Search pages" />
+          <button class="layr-button primary icon" id="new" title="New page" aria-label="New page">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M11 5h2v14h-2zM5 11h14v2H5z" fill="currentColor" /></svg>
+          </button>
+        </div>
+        <div class="side-filters">
+          <select class="layr-select" id="typeFilter" aria-label="Type"></select>
+          <select class="layr-select" id="sort" aria-label="Order">
+            <option value="recent">Recent</option>
+            <option value="az">A to Z</option>
+          </select>
+        </div>
+        <ul class="layr-list page-list" id="list" role="listbox" aria-label="Pages"></ul>
+        <div class="side-foot">
+          <button class="layr-button ghost small" id="homeBtn">Overview</button>
+          <button class="layr-button ghost small" id="trashBtn">Trash</button>
+          <span class="layr-spacer"></span>
+          <span class="layr-muted" id="count"></span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="layr-toolbar top">
+          <button class="layr-button ghost icon" id="back" title="Back" aria-label="Back">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z" fill="currentColor" /></svg>
+          </button>
+          <button class="layr-button ghost icon" id="listBtn" title="Pages" aria-label="Pages">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" fill="currentColor" /></svg>
+          </button>
+          <span class="crumb" id="crumb"></span>
+          <span class="layr-spacer"></span>
+          <span class="save-state layr-muted" id="saveState"></span>
+          <button class="layr-button small" id="editBtn" title="Edit (Ctrl+E)">Edit</button>
+          <button class="layr-button ghost icon" id="historyBtn" title="History" aria-label="History">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M13 3a9 9 0 0 0-9 9H1l4 4 4-4H6a7 7 0 1 1 2.05 4.95l-1.41 1.41A9 9 0 1 0 13 3zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z" fill="currentColor" /></svg>
+          </button>
+          <button class="layr-button ghost icon" id="moreBtn" title="More" aria-label="More">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" fill="currentColor" /></svg>
+          </button>
+        </div>
+        <div class="banner" id="banner" hidden></div>
+        <div class="content" id="content"></div>
+      </main>
+    </div>
+    <div class="modal-back" id="modal" hidden></div>
+    <ul class="complete" id="complete" hidden role="listbox"></ul>
+    <input type="file" id="filePick" multiple hidden />
+  </body>
+</html>

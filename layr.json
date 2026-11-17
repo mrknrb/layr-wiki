@@ -1,0 +1,68 @@
+{
+  "id": "wiki",
+  "name": "Wiki",
+  "version": "0.1.0",
+  "description": "Your personal knowledge base: Markdown pages linked to each other, page types, history, AI tools, and a folder copy Obsidian can open.",
+  "author": "mrknrb",
+  "layr": "^0.1",
+  "icon": "menu_book",
+  "permissions": ["data", "pc", "supabase", "network:https://tirznddjqwrovpvasgpn.supabase.co"],
+  "needs": ["pc", "node"],
+  "sync": true,
+  "check": "test/check.mjs",
+  "panels": [{ "id": "main", "title": "Wiki", "page": "panels/main.html", "icon": "menu_book" }],
+  "links": [{ "path": "page", "panel": "main", "param": "page" }],
+  "commands": [
+    { "id": "open", "title": "Wiki: Open", "panel": "main" },
+    { "id": "new", "title": "Wiki: New page", "panel": "main", "params": { "new": true } },
+    { "id": "search", "title": "Wiki: Search", "panel": "main", "params": { "search": true } },
+    { "id": "mirror-now", "title": "Wiki: Write the folder copy now", "tool": "mirror_now" }
+  ],
+  "menus": [
+    { "menu": "View", "command": "open", "group": "3" },
+    { "menu": "File", "command": "new", "group": "1" }
+  ],
+  "keybindings": [{ "key": "ctrl+alt+w", "command": "open" }],
+  "settings": [
+    {
+      "id": "mirror",
+      "type": "boolean",
+      "title": "Keep a copy in a folder",
+      "description": "Every page as a Markdown file and every attachment as a file, kept up to date on this PC. Obsidian can open the folder.",
+      "default": true
+    },
+    {
+      "id": "folder",
+      "type": "string",
+      "title": "Folder of the copy",
+      "description": "Empty: Documents\\layr wiki in your user folder.",
+      "default": "",
+      "placeholder": "C:\\Users\\you\\Documents\\layr wiki"
+    }
+  ],
+  "backend": { "kind": "process", "runtime": "node", "entry": "backend/server.js", "autoStart": true },
+  "access": {
+    "groups": [
+      {
+        "id": "read",
+        "label": "Read your wiki",
+        "tools": ["guide", "overview", "search", "list", "read", "history", "types", "attachments", "mirror_status"],
+        "defaults": { "plugins": "allow", "agents": "allow" }
+      },
+      {
+        "id": "write",
+        "label": "Write and change pages in your wiki (every change can be undone)",
+        "tools": ["create", "write", "edit", "append", "set_properties", "rename", "trash", "restore", "define_type",
+                  "mirror_now"],
+        "defaults": { "agents": "allow" }
+      },
+      {
+        "id": "files",
+        "label": "Bring files from this PC into your wiki",
+        "description": "Upload a file as an attachment, or import a folder of Markdown files (an Obsidian vault).",
+        "tools": ["attach", "import_folder"],
+        "defaults": { "agents": "allow" }
+      }
+    ]
+  }
+}
