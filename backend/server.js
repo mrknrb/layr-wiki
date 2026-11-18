@@ -26,7 +26,7 @@ async function main() {
     device: process.env.LAYR_DEVICE ?? null,
     log,
   });
-  const server = new Server({ name: "wiki", version: "0.1.0" }, { capabilities: { tools: {} }, instructions: GUIDE });
+  const server = new Server({ name: "wiki", version: "0.2.0" }, { capabilities: { tools: {} }, instructions: GUIDE });
   server.setRequestHandler(ListToolsRequestSchema, () => ({
     tools: [...backend.tools.values()].map((t) => ({ name: t.name, description: t.description, inputSchema: t.inputSchema })),
   }));
@@ -45,7 +45,12 @@ async function main() {
     try {
       if (topic === "layr:data.changed") await backend.onChanged(changedFromSync(data));
       else if (topic === "wiki:changed" && data?.origin !== "backend") await backend.onChanged(data);
-      else if (topic === "wiki:settings") backend.mirror.schedule(200);
+      else if (topic === "wiki:settings") {
+        // layr's settings of the plugin (the folder copy) changed; the wiki's own (data `settings`) are read again too,
+        // though they come as wiki:changed {settings: true} (the panel) or layr:data.changed (another device).
+        await backend.reloadSettings().catch((e) => log(`settings: ${errorMessage(e)}`));
+        backend.mirror.schedule(200);
+      }
     } catch (error) {
       log(`event ${topic}: ${errorMessage(error)}`);
     }

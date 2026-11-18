@@ -164,6 +164,19 @@ export class Files {
     return record;
   }
 
+  /**
+   * Delete an attachment: its record, and the stored bytes when no other name holds the same content. Pages that
+   * still embed it show it as missing (the Attachments page offers this only for unused files).
+   */
+  async remove(name) {
+    const record = await this.get(name);
+    if (!record) return false;
+    await this.a.dataDelete(fileKey(record.name));
+    const others = (await this.list()).some((r) => r.sha256 === record.sha256);
+    if (!others) await this.request("DELETE", record.sha256).catch(() => {});
+    return true;
+  }
+
   /** The bytes of an attachment: `{record, bytes: ArrayBuffer}`. */
   async download(name) {
     const record = await this.get(name);

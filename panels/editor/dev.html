@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- The editor on its own, with a stand-in for the panel's `app`, for development and the browser test
+     (test/editor.e2e.js). Serve the repository's root and open /plugins/wiki/panels/editor/dev.html. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+  <title>Wiki editor (dev)</title>
+  <link rel="stylesheet" href="../../../../core/layr_core/assets/layr.css">
+  <style>
+    html, body { height: 100%; }
+    body { display: flex; flex-direction: column; --wiki-font-size: 16px; }
+    #bar { flex: none; }
+    #host { flex: 1; min-height: 0; overflow: hidden; }
+    #log { position: fixed; right: 8px; top: 60px; font: 11px var(--font-mono); color: var(--fg-dim); max-width: 260px;
+      pointer-events: none; white-space: pre-wrap; display: none; }
+  </style>
+</head>
+<body>
+  <div id="bar"></div>
+  <div id="host"></div>
+  <div id="log"></div>
+  <script type="module" src="./dev.js"></script>
+</body>
+</html>

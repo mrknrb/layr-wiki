@@ -1,0 +1,200 @@
+/* Part E, in and out: export dialog, progress, the print view, imports, the Public panel. layr.css variables only. */
+
+.io-offscreen {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 800px;
+  visibility: hidden;
+  pointer-events: none;
+}
+.io-progress {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  box-shadow: var(--shadow, 0 8px 24px rgba(0, 0, 0, 0.2));
+  font-size: 13px;
+}
+
+/* ---------- dialogs ---------- */
+
+.io-dialog .layr-label {
+  display: block;
+  margin: 12px 0 4px;
+}
+.io-dialog .layr-select,
+.io-dialog > .layr-input {
+  width: 100%;
+}
+.io-scopes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.io-scope {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.io-scope:hover {
+  background: var(--bg-2);
+}
+.io-scope .layr-select {
+  flex: 1;
+  min-width: 140px;
+  width: auto;
+}
+.io-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+.io-pick-list {
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+}
+.io-pick-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.io-pick-row:hover {
+  background: var(--bg-2);
+}
+.io-pick-row span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.io-pick-row .layr-muted {
+  font-size: 12px;
+}
+.io-steps {
+  padding-left: 20px;
+  line-height: 1.6;
+}
+.io-steps li + li {
+  margin-top: 6px;
+}
+.io-dialog .ai-modal-buttons .layr-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ---------- the print view ---------- */
+
+.io-print {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--bg-3) 85%, #000 15%);
+}
+.io-print-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.io-print-bar .layr-spacer {
+  flex: 1;
+}
+.io-print-bar .layr-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.io-print-bar .layr-muted {
+  font-size: 12px;
+}
+.io-print-paper {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 18px;
+  display: flex;
+  justify-content: center;
+}
+.io-print-frame {
+  width: min(820px, 100%);
+  height: 100%;
+  border: 0;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- the Public panel ---------- */
+
+.io-share-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+.io-share-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--success);
+  font-weight: 600;
+  font-size: 12.5px;
+}
+.io-share-panel .layr-input {
+  width: 100%;
+  font: 12px var(--font-mono);
+}
+.io-share-stale {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--warning);
+  font-size: 12px;
+}
+.io-share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.io-share-buttons .layr-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 700px) {
+  .io-print-paper {
+    padding: 0;
+  }
+  .io-print-frame {
+    border-radius: 0;
+  }
+}

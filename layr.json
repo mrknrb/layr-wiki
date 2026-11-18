@@ -1,26 +1,38 @@
 {
   "id": "wiki",
   "name": "Wiki",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Your personal knowledge base: Markdown pages linked to each other, page types, history, AI tools, and a folder copy Obsidian can open.",
   "author": "mrknrb",
   "layr": "^0.1",
   "icon": "menu_book",
-  "permissions": ["data", "pc", "supabase", "network:https://tirznddjqwrovpvasgpn.supabase.co"],
+  "permissions": ["data", "pc", "supabase", "files", "network:https://tirznddjqwrovpvasgpn.supabase.co"],
+  "connections": [
+    { "plugin": "claude", "groups": ["ask"],
+      "why": "Ask your wiki, AI actions on selected text, and suggested links and tags (one-off questions to Claude)" },
+    { "plugin": "scraper", "groups": ["read"], "why": "Clip a web page: reads its article and saves it as a page" }
+  ],
   "needs": ["pc", "node"],
   "sync": true,
   "check": "test/check.mjs",
   "panels": [{ "id": "main", "title": "Wiki", "page": "panels/main.html", "icon": "menu_book" }],
-  "links": [{ "path": "page", "panel": "main", "param": "page" }],
+  "links": [
+    { "path": "page", "panel": "main", "param": "page" },
+    { "path": "search", "panel": "main", "param": "search" }
+  ],
   "commands": [
     { "id": "open", "title": "Wiki: Open", "panel": "main" },
     { "id": "new", "title": "Wiki: New page", "panel": "main", "params": { "new": true } },
+    { "id": "quick-note", "title": "Wiki: Quick note", "panel": "main", "params": { "quickNote": true } },
+    { "id": "today", "title": "Wiki: Today's note", "panel": "main", "params": { "today": true } },
     { "id": "search", "title": "Wiki: Search", "panel": "main", "params": { "search": true } },
     { "id": "mirror-now", "title": "Wiki: Write the folder copy now", "tool": "mirror_now" }
   ],
   "menus": [
     { "menu": "View", "command": "open", "group": "3" },
-    { "menu": "File", "command": "new", "group": "1" }
+    { "menu": "File", "command": "new", "group": "1" },
+    { "menu": "File", "command": "quick-note", "group": "1" },
+    { "menu": "File", "command": "today", "group": "1" }
   ],
   "keybindings": [{ "key": "ctrl+alt+w", "command": "open" }],
   "settings": [
@@ -46,21 +58,28 @@
       {
         "id": "read",
         "label": "Read your wiki",
-        "tools": ["guide", "overview", "search", "list", "read", "history", "types", "attachments", "mirror_status"],
+        "tools": ["guide", "overview", "search", "list", "read", "history", "types", "attachments", "mirror_status",
+                  "folders", "templates", "proposals", "tasks", "views", "query", "export"],
         "defaults": { "plugins": "allow", "agents": "allow" }
       },
       {
         "id": "write",
         "label": "Write and change pages in your wiki (every change can be undone)",
-        "tools": ["create", "write", "edit", "append", "set_properties", "rename", "trash", "restore", "define_type",
+        "tools": ["create", "write", "edit", "append", "set_properties", "rename", "move", "trash", "restore",
+                  "define_type", "delete_type", "create_folder", "rename_folder", "daily_note", "clip_page",
                   "mirror_now"],
         "defaults": { "agents": "allow" }
       },
       {
+        "id": "share",
+        "label": "Make pages of your wiki public (anyone with the link can read them)",
+        "tools": ["publish", "unpublish"]
+      },
+      {
         "id": "files",
         "label": "Bring files from this PC into your wiki",
-        "description": "Upload a file as an attachment, or import a folder of Markdown files (an Obsidian vault).",
-        "tools": ["attach", "import_folder"],
+        "description": "Upload a file as an attachment, or import a folder of Markdown files (an Obsidian vault), a Word file or a Notion export.",
+        "tools": ["attach", "import_folder", "import_word", "import_notion", "upload_part", "clip_images"],
         "defaults": { "agents": "allow" }
       }
     ]
