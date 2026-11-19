@@ -15,7 +15,7 @@ const EXTRA_VIEWS = [
   { view: "graph", label: "Graph", icon: "waypoints", text: "How your pages link" },
   { view: "tasks", label: "Tasks", icon: "list-todo", text: "Every open checkbox" },
   { view: "calendar", label: "Calendar", icon: "calendar-days", text: "Daily notes by date" },
-  { view: "ask", label: "Ask your wiki", icon: "sparkles", text: "Answers from your pages" },
+  { view: "ask", label: "Ask Claude", icon: "sparkles", text: "A thread beside the wiki" },
   { view: "review", label: "Review", icon: "clipboard-check", text: "AI changes waiting for you" },
   { view: "attachments", label: "Attachments", icon: "paperclip", text: "Every file, where it is used" },
   { view: "health", label: "Health", icon: "activity", text: "Broken links, orphans" },

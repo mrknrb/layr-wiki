@@ -172,7 +172,7 @@ export function installActions(app) {
     run(ed) {
       if (!enabled()) {
         app.ui.notify(app.ai.available() ? "AI actions are off in the wiki's settings (AI)." :
-          "AI actions need the Claude Code plugin (see Ask your wiki).", "info");
+          "AI actions need the Claude Code plugin (install it from layr's store).", "info");
         return;
       }
       const sel = ed.selection?.();

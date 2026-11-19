@@ -1,6 +1,6 @@
 {
   "name": "layr-plugin-wiki",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "layr's personal wiki: Markdown pages linked to each other, history, AI tools and a folder copy.",

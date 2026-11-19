@@ -92,10 +92,8 @@ export const SETTINGS = [
     description: "Changes AI agents make wait in Review until you accept or reject them.", default: false },
   { id: "aiActions", group: "ai", type: "boolean", title: "AI actions on selected text", default: true },
   { id: "aiSuggest", group: "ai", type: "boolean", title: "Suggest links and tags", default: true },
-  { id: "aiModel", group: "ai", type: "enum", title: "Model for Ask and AI actions", default: "sonnet",
+  { id: "aiModel", group: "ai", type: "enum", title: "Model for AI actions and suggestions", default: "sonnet",
     options: [{ value: "haiku", label: "Haiku (fast)" }, { value: "sonnet", label: "Sonnet" }, { value: "opus", label: "Opus (best)" }] },
-  { id: "askPages", group: "ai", type: "number", title: "Pages Ask reads for an answer", default: 8, min: 2, max: 30,
-    step: 1 },
 
   // History
   { id: "historyMinutes", group: "history", type: "number", title: "One version per … minutes of editing", default: 10,

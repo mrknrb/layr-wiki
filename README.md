@@ -89,10 +89,14 @@ an idea, a how-to), linked to each other, kept in folders, readable and writable
 
 ## AI, import, export and public links
 
-- **AI** goes through the Claude Code plugin's `ask` tool and **the clipper** through Web tools (`scraper__scrape`):
-  both optional connections. Their buttons show only while the connection is usable. Ask your wiki (route `ask`,
-  also a right-sidebar panel) sends the pages that match a question (setting `askPages`) and renders the answer with
-  its `[[citations]]`; chats are data `ask/<id>`. AI actions on selected text, Suggest links and tags (page ⋯ menu),
+- **AI** goes through the Claude Code plugin and **the clipper** through Web tools (`scraper__scrape`): both optional
+  connections. Their buttons show only while the connection is usable. **Ask Claude** (route `ask`, also a
+  right-sidebar panel) sends the message to a Claude thread that opens beside the wiki (`panels.open` thread, `right`,
+  reused), so there is one kind of chat in layr and it can use every plugin. The thread works in the wiki's own folder
+  (`<LAYR_DATA_DIR>/Wiki`, tool `thread_folder`, only a CLAUDE.md in it; project "Wiki") and starts locked: `dontAsk`
+  with reading, the web and `mcp__layr` allowed, so it never edits files or runs programs, and layr's tools go by Tool
+  access. The next message continues it (data `askThread`) until "New thread". Chats from before are data
+  `ask/<id>`, readable under "Earlier chats". AI actions on selected text, Suggest links and tags (page ⋯ menu),
   the Review page for AI changes waiting in review mode, and Clip a web page (into the `clipFolder` folder, pictures
   copied as attachments on the PC). Code: `panels/ai/`.
 - **Export** a page, a folder or picked pages as one HTML file (pictures and styles inside), Markdown (a .zip with

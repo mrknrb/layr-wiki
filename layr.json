@@ -1,15 +1,15 @@
 {
   "id": "wiki",
   "name": "Wiki",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Your personal knowledge base: Markdown pages linked to each other, page types, history, AI tools, and a folder copy Obsidian can open.",
   "author": "mrknrb",
   "layr": "^0.1",
   "icon": "menu_book",
   "permissions": ["data", "pc", "supabase", "files", "network:https://tirznddjqwrovpvasgpn.supabase.co"],
   "connections": [
-    { "plugin": "claude", "groups": ["ask"],
-      "why": "Ask your wiki, AI actions on selected text, and suggested links and tags (one-off questions to Claude)" },
+    { "plugin": "claude", "groups": ["ask", "run", "read"],
+      "why": "Ask Claude opens a Claude thread beside the wiki; AI actions on selected text and suggested links and tags ask one-off questions" },
     { "plugin": "scraper", "groups": ["read"], "why": "Clip a web page: reads its article and saves it as a page" }
   ],
   "needs": ["pc", "node"],
@@ -58,7 +58,7 @@
       {
         "id": "read",
         "label": "Read your wiki",
-        "tools": ["guide", "overview", "search", "list", "read", "history", "types", "attachments", "mirror_status",
+        "tools": ["guide", "overview", "search", "list", "read", "history", "types", "attachments", "mirror_status", "thread_folder",
                   "folders", "templates", "proposals", "tasks", "views", "query", "export"],
         "defaults": { "plugins": "allow", "agents": "allow" }
       },

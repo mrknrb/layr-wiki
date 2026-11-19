@@ -1,4 +1,4 @@
-/* Part E, the AI: Ask your wiki, the AI popover on selected text, suggestions, the review inbox, the clipper.
+/* Part E, the AI: Ask Claude, the AI popover on selected text, suggestions, the review inbox, the clipper.
    layr.css variables only, so light and dark both work; one column at phone width. */
 
 .ai-small {
@@ -40,7 +40,7 @@
   color: var(--accent);
 }
 
-/* ---------- Ask your wiki ---------- */
+/* ---------- Ask Claude ---------- */
 
 .ai-ask-host {
   height: 100%;
@@ -224,6 +224,31 @@
   padding-top: 6px;
   font-size: 11.5px;
   text-align: center;
+}
+.ai-ask-foot > div + div {
+  margin-top: 2px;
+}
+.ai-ask-foot .icon {
+  width: 12px;
+  height: 12px;
+  vertical-align: -2px;
+}
+.ai-ask-target {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  font-size: 12.5px;
+}
+.ai-ask-target .layr-button {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ai-ask-error {
+  margin: 4px 0;
 }
 .ai-unavailable {
   max-width: 460px;

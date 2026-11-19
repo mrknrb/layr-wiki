@@ -12,6 +12,7 @@ import { describeProposal } from "../shared/proposals.js";
 import { formatDate } from "../shared/templates.js";
 import { KINDS } from "../shared/types.js";
 import { buildIoTools, IO_READS } from "./io-tools.js";
+import { ensureThreadFolder } from "./threads.js";
 import { buildViewTools, VIEW_READS } from "./view-tools.js";
 
 export const GUIDE = `The user's wiki (wiki__*): their personal knowledge base, kept for years, Obsidian-style. One page per
@@ -195,9 +196,9 @@ const FIELD = {
 
 /**
  * The tools. `getWiki()` → the loaded Wiki; `files`: attachments (Files); `mirror`: the folder copy;
- * `fs`: reads files on the PC (attach, import_folder; tests replace it).
+ * `fs`: reads files on the PC (attach, import_folder; tests replace it); `dataDir`: the plugin's LAYR_DATA_DIR.
  */
-export function buildTools({ getWiki, files, mirror, fs = { readdir, readFile, stat } }) {
+export function buildTools({ getWiki, files, mirror, fs = { readdir, readFile, stat }, dataDir = null }) {
   const tools = new Map();
   const add = (name, description, inputSchema, handler) => tools.set(name, { name, description, inputSchema, handler });
 
@@ -656,6 +657,10 @@ export function buildTools({ getWiki, files, mirror, fs = { readdir, readFile, s
   add("mirror_status", "The folder copy of the wiki on this PC: where it is, when it was last written, problems.",
     S({}), async () => JSON.stringify(mirror.status(), null, 2));
 
+  add("thread_folder",
+    "The folder Claude threads opened from the wiki work in (made, with its CLAUDE.md, when missing). For the panel.",
+    S({}), async () => JSON.stringify({ path: await ensureThreadFolder(dataDir) }));
+
   add("mirror_now", "Write the folder copy of the wiki now (it is kept up to date by itself).", S({}), async () => {
     await mirror.run({ reload: true });
     return JSON.stringify(mirror.status(), null, 2);
@@ -672,4 +677,4 @@ export function buildTools({ getWiki, files, mirror, fs = { readdir, readFile, s
 
 /** Tools that only read (the others may change pages, so the panels hear wiki:changed from the model). */
 export const READS = new Set(["guide", "overview", "search", "list", "read", "history", "types", "attachments",
-  "mirror_status", "folders", "templates", "proposals", ...VIEW_READS, ...IO_READS]);
+  "mirror_status", "thread_folder", "folders", "templates", "proposals", ...VIEW_READS, ...IO_READS]);

@@ -4,7 +4,7 @@
 import { joinFrontmatter, setProperties, splitFrontmatter } from "../../shared/frontmatter.js";
 import { asList, cleanTitle, keyOf, maskCode, mentions } from "../../shared/links.js";
 
-// ---------- Ask your wiki ----------
+// ---------- Ask your wiki (the one-off chat before Ask Claude opened threads; kept for its tests) ----------
 
 const STOP = new Set(("a an and are as at be but by can could did do does for from had has have how i if in into is it " +
   "its me my no not of on or our she so than that the their them then there these they this to was we were what when " +
@@ -120,6 +120,17 @@ export const chatTitle = (question) => {
   const t = String(question ?? "").replace(/\s+/g, " ").trim();
   return t.length > 60 ? `${t.slice(0, 57)}…` : t || "New chat";
 };
+
+/**
+ * A message for a Claude thread opened from the wiki (Ask Claude): where the user is (the open page, with its link)
+ * in one line, then what they wrote. The rest of what such a thread should know is in its folder's CLAUDE.md.
+ */
+export function threadMessage(question, { page = null } = {}) {
+  const q = String(question ?? "").trim();
+  if (!page?.title) return q;
+  const title = String(page.title).replace(/"/g, "'");
+  return `(Sent from the Wiki. Open page: "${title}", layr://wiki/page/${page.id})\n\n${q}`;
+}
 
 /** An answer saved as a page: the question as a callout, then the answer. */
 export function answerPage(question, answer, { date = new Date() } = {}) {

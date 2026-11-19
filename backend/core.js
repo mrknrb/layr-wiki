@@ -30,7 +30,7 @@ export function hubAdapter(hub) {
  * copy's); the wiki's own settings (history, review mode, templates) are its data key `settings`, read on load and
  * again when they change.
  */
-export function createBackend({ adapter, session, settings, device = null, log = () => {} }) {
+export function createBackend({ adapter, session, settings, device = null, dataDir = null, log = () => {} }) {
   const wiki = new Wiki(adapter, { who: "ai", device });
   let loaded = null;
   let loadedAt = 0;
@@ -45,7 +45,7 @@ export function createBackend({ adapter, session, settings, device = null, log =
   };
   const files = new Files({ session, adapter, who: "ai" });
   const mirror = new Mirror({ getWiki, files, settings, log });
-  const tools = buildTools({ getWiki, files, mirror });
+  const tools = buildTools({ getWiki, files, mirror, dataDir });
 
   /**
    * Something changed elsewhere (a panel, another device): read it again and update the folder copy. `{ids, types,

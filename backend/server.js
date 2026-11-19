@@ -24,9 +24,10 @@ async function main() {
     session: () => hub.call("layr__supabase_session", {}),
     settings,
     device: process.env.LAYR_DEVICE ?? null,
+    dataDir: process.env.LAYR_DATA_DIR ?? null,
     log,
   });
-  const server = new Server({ name: "wiki", version: "0.2.0" }, { capabilities: { tools: {} }, instructions: GUIDE });
+  const server = new Server({ name: "wiki", version: "0.3.0" }, { capabilities: { tools: {} }, instructions: GUIDE });
   server.setRequestHandler(ListToolsRequestSchema, () => ({
     tools: [...backend.tools.values()].map((t) => ({ name: t.name, description: t.description, inputSchema: t.inputSchema })),
   }));

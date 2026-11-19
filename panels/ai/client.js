@@ -1,6 +1,7 @@
-// `app.ai`: the wiki's way to Claude, through the Claude Code plugin's `ask` tool (one turn, no tools, on the PC's
-// Claude Code sign-in), and to web pages through Web tools (`scraper`). Both are optional connections (layr.json):
-// the AI's buttons show only while the connection is usable, and a call it refuses says how to allow it.
+// `app.ai`: the wiki's way to Claude, through the Claude Code plugin: its `ask` tool (one turn, no tools, on the PC's
+// Claude Code sign-in) for the small AI actions, its threads for Ask Claude (ask.js); and to web pages through Web
+// tools (`scraper`). Both are optional connections (layr.json): the AI's buttons show only while the connection is
+// usable, and a call it refuses says how to allow it.
 
 const CLAUDE = "claude";
 const SCRAPER = "scraper";
@@ -17,8 +18,23 @@ export function aiError(error, what = "Claude Code") {
   return error instanceof Error ? error : new Error(String(error));
 }
 
+/**
+ * Whether a connection's groups can be used: allowed, or not decided yet (the first call asks the user, so the button
+ * shows). A denied group, a missing plugin or a blocked one says no. `groups`: the ones that matter (all when left out).
+ */
+export function connectionUsable(c, groups = null) {
+  if (!c?.installed || c.blocked || ["missing", "version", "blocked"].includes(c.state)) return false;
+  const all = c.groups ?? [];
+  const named = groups ? all.filter((g) => groups.includes(g.id)) : all;
+  if (groups && named.length < groups.length) return false;
+  return named.every((g) => g.exists !== false && g.rule !== "deny");
+}
+
+/** What a thread opened from the wiki may use without asking: reading, the web, and layr's tools (Tool access decides). */
+export const THREAD_TOOLS = ["Read", "Glob", "Grep", "WebSearch", "WebFetch", "TodoWrite", "mcp__layr"];
+
 export function createAi(app) {
-  const state = { claude: false, scraper: false, checked: false };
+  const state = { claude: false, threads: false, scraper: false, checked: false };
   const listeners = new Set();
   const tell = () => {
     for (const fn of listeners) {
@@ -33,18 +49,13 @@ export function createAi(app) {
   async function check() {
     try {
       const { connections = [] } = await layr.connections.get();
-      // Usable, or installed with groups not decided yet ("ask"): the first call asks the user, so show the button.
-      // Only a denied group, a missing plugin or a blocked one hides it.
-      const usable = (id) => {
-        const c = connections.find((x) => x.plugin === id);
-        if (c?.usable) return true;
-        return Boolean(c?.installed && c.state === "ungranted" && !c.blocked &&
-          (c.groups ?? []).every((g) => g.exists !== false && g.rule !== "deny"));
-      };
-      state.claude = usable(CLAUDE);
-      state.scraper = usable(SCRAPER);
+      const find = (id) => connections.find((x) => x.plugin === id);
+      state.claude = connectionUsable(find(CLAUDE), ["ask"]);
+      state.threads = connectionUsable(find(CLAUDE), ["run", "read"]);
+      state.scraper = connectionUsable(find(SCRAPER));
     } catch {
       state.claude = false;
+      state.threads = false;
       state.scraper = false;
     }
     state.checked = true;
@@ -63,6 +74,17 @@ export function createAi(app) {
     check,
     /** Claude is there and the wiki may ask it. */
     available: () => state.claude,
+    /** Claude threads can be started from the wiki (Ask Claude). */
+    canThread: () => state.threads,
+    /** A Claude Code plugin tool (threads); a refused call says how to allow it. */
+    async claude(tool, args = {}) {
+      try {
+        return await layr.tools.run(tool, args, { plugin: CLAUDE });
+      } catch (error) {
+        if (error?.code === layr.errors?.NOT_ALLOWED || error?.code === layr.errors?.NOT_FOUND) check();
+        throw aiError(error, "Claude Code");
+      }
+    },
     /** Web tools are there (the clipper). */
     canClip: () => state.scraper,
     onChange(fn) {
