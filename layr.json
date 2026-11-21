@@ -1,4 +1,5 @@
 {
+  "repository": "https://github.com/mrknrb/layr-wiki",
   "id": "wiki",
   "name": "Wiki",
   "version": "0.3.1",
