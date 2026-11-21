@@ -1,0 +1,26 @@
+# The checks of the layr plugin "wiki" on every push and pull request (as layr's own checks.yml ran them before
+# the plugin moved to its own repository). The end-to-end tests that drive panels in Chromium against a running layr
+# core are not here; run them by hand as their headers say.
+name: checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: astral-sh/setup-uv@v6
+      - name: layr.json is valid
+        run: node -e "JSON.parse(require('fs').readFileSync('layr.json', 'utf8'))"
+      - name: install
+        shell: bash
+        run: if [ -f package-lock.json ]; then npm ci --ignore-scripts; fi
+      - name: test
+        shell: bash
+        run: npm test
