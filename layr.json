@@ -1,7 +1,7 @@
 {
   "id": "wiki",
   "name": "Wiki",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Your personal knowledge base: Markdown pages linked to each other, page types, history, AI tools, and a folder copy Obsidian can open.",
   "author": "mrknrb",
   "layr": "^0.1",
